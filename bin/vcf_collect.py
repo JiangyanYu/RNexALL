@@ -3,7 +3,7 @@
 # Author: Annick Renevey, annick.renevey@scilifelab.se
 # License: MIT
 #
-# This script is part of the rnafusion pipeline.
+# This script is part of the RNexALL pipeline.
 # For full license and authorship information, see the repository README.
 #
 

@@ -1,8 +1,8 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/rnafusion/master/nextflow_schema.json",
-    "title": "nf-core/rnafusion pipeline parameters",
-    "description": "Nextflow rnafusion analysis pipeline, part of the nf-core community.",
+    "$id": "https://raw.githubusercontent.com/RNexALL/master/nextflow_schema.json",
+    "title": "RNexALL pipeline parameters",
+    "description": "Nextflow RNexALL analysis pipeline, part of the nf-core community.",
     "type": "object",
     "$defs": {
         "skip_steps": {

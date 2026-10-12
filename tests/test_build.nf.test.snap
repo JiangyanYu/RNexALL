@@ -47,7 +47,7 @@
                     "ucsc": 447
                 },
                 "Workflow": {
-                    "nf-core/rnafusion": "v4.0.0"
+                    "RNexALL": "v4.0.0"
                 }
             },
             [
@@ -56,7 +56,7 @@
                 "bioawk",
                 "bioawk/minigenome.gtf_rrna.gtf.gz",
                 "pipeline_info",
-                "pipeline_info/nf_core_rnafusion_software_mqc_versions.yml",
+                "pipeline_info/rnexall_software_mqc_versions.yml",
                 "references",
                 "references/GRCh38",
                 "references/GRCh38/fusion_report_db",

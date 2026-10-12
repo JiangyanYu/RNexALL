@@ -1,5 +1,5 @@
 //
-// Subworkflow with functionality specific to the nf-core/rnafusion pipeline
+// Subworkflow with functionality specific to the RNexALL pipeline
 //
 
 /*

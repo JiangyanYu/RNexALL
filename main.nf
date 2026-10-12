@@ -1,11 +1,9 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/rnafusion
+    RNexALL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/rnafusion
-    Website: https://nf-co.re/rnafusion
-    Slack  : https://nfcore.slack.com/channels/rnafusion
+    Project: RNexALL
 ----------------------------------------------------------------------------------------
 */
 
@@ -15,7 +13,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_rnafusion_pipeline'
+include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_rnexall_pipeline'
 
 params.fasta                        = getGenomeAttribute("fasta")
 params.fai                          = getGenomeAttribute("fai")
@@ -40,9 +38,9 @@ params.fusionreport_ref             = getGenomeAttribute("fusionreport_ref")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_rnafusion_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_rnafusion_pipeline'
-include { RNAFUSION               } from './workflows/rnafusion'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_rnexall_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_rnexall_pipeline'
+include { RNEXALL                 } from './workflows/rnexall'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,7 +70,7 @@ workflow {
         }
         tools = pattern.replace('^((', "").replace(')?,?)*(?<!,)$', "").tokenize("|") - "all"
     }
-    log.debug("Rnafusion tools to run: ${tools}")
+    log.debug("RNexALL tools to run: ${tools}")
 
     def profiles = workflow.profile
     if ((profiles.contains("conda") || profiles.contains("mamba")) && (tools.contains("ctatsplicing"))) {
@@ -101,7 +99,7 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    RNAFUSION(
+    RNEXALL(
         PIPELINE_INITIALISATION.out.samplesheet,
         tools
     )
@@ -116,7 +114,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        RNAFUSION.out.multiqc_report
+        RNEXALL.out.multiqc_report
     )
 }
 

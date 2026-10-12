@@ -1,4 +1,4 @@
-# nf-core/rnafusion: Output
+# RNexALL: Output
 
 ## Introduction
 

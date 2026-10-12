@@ -1,7 +1,7 @@
 <h1>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-rnafusion_logo_dark_new.png">
-    <img alt="nf-core/rnafusion" src="docs/images/nf-core-rnafusion_logo_light_new.png">
+    <img alt="RNexALL" src="docs/images/nf-core-rnafusion_logo_light_new.png">
   </picture>
 </h1>
 
@@ -20,7 +20,7 @@
 
 ## Introduction
 
-**nf-core/rnafusion** is a bioinformatics best-practice analysis pipeline for RNA sequencing consisting of several tools designed for detecting and visualizing fusion genes. Results from fusion callers tools (STAR-Fusion, arriba and FusionCatcher) are created, and are also aggregated, most notably in a pdf visualisation document, a vcf data collection file, and html and tsv reports. In parallel StringTie and CTAT-Splicing collect additional information on splicing events.
+**RNexALL** is a bioinformatics best-practice analysis pipeline for RNA sequencing consisting of several tools designed for detecting and visualizing fusion genes. Results from fusion callers tools (STAR-Fusion, arriba and FusionCatcher) are created, and are also aggregated, most notably in a pdf visualisation document, a vcf data collection file, and html and tsv reports. In parallel StringTie and CTAT-Splicing collect additional information on splicing events.
 
 On release, automated continuous integration tests run the pipeline on a full-sized dataset on the AWS cloud infrastructure. This ensures that the pipeline runs on AWS, has sensible resource allocation defaults set to run on real-world datasets, and permits the persistent storage of results to benchmark between pipeline releases and other analysis sources. The results obtained from the full-sized test can be viewed on the [nf-core website](https://nf-co.re/rnafusion/results).
 
@@ -28,7 +28,7 @@ In rnafusion the full-sized test includes reference building and fusion detectio
 
 ## Pipeline summary
 
-![nf-core/rnafusion metro map](docs/images/nf-core-rnafusion_metro_map.png)
+![RNexALL metro map](docs/images/nf-core-rnafusion_metro_map.png)
 
 ### References
 
@@ -85,7 +85,7 @@ The pipeline is also able to build the references in case files from a specific 
 As the reference building is computationally heavy (> 24h on HPC), we had to use dummy reference files in the test profile. Therefore, it is recommended to run the test profile with the `-stub` option.
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
    -profile test,<docker/singularity/.../institute> \
    --outdir <OUTDIR> \
    -stub
@@ -111,7 +111,7 @@ For more details about the output files and reports, please refer to the
 
 ## Credits
 
-nf-core/rnafusion was written by Martin Proks ([@matq007](https://github.com/matq007)), Maxime Garcia ([@maxulysse](https://github.com/maxulysse)) and Annick Renevey ([@rannick](https://github.com/rannick))
+RNexALL was written by Martin Proks ([@matq007](https://github.com/matq007)), Maxime Garcia ([@maxulysse](https://github.com/maxulysse)) and Annick Renevey ([@rannick](https://github.com/rannick))
 
 ## We thank the following people for their help in the development of this pipeline
 
@@ -130,7 +130,7 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 
 ## Citations
 
-If you use nf-core/rnafusion for your analysis, please cite it using the following doi: [10.5281/zenodo.3946477](https://doi.org/10.5281/zenodo.3946477)
+If you use RNexALL for your analysis, please cite it using the following doi: [10.5281/zenodo.3946477](https://doi.org/10.5281/zenodo.3946477)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 

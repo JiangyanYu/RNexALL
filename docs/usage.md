@@ -1,4 +1,4 @@
-# nf-core/rnafusion: Usage <!-- omit in toc -->
+# RNexALL: Usage <!-- omit in toc -->
 
 ## :warning: Please read this documentation on the nf-core website: [https://nf-co.re/rnafusion/usage](https://nf-co.re/rnafusion/usage)
 
@@ -21,7 +21,7 @@ The pipeline is divided into two parts:
 
 ## Download and build references
 
-The rnafusion pipeline needs references for the fusion detection tools, so downloading these is a **requirement**.
+The RNexALL pipeline needs references for the fusion detection tools, so downloading these is a **requirement**.
 
 The references for the pipeline can be downloaded from the nf-core AWS megatests S3 bucket using the following command for the [AWS CLI tool](https://github.com/aws/aws-cli):
 
@@ -39,7 +39,7 @@ The fusion report references available on the S3 bucket do not contain informati
 Additionally, the references can be built by the pipeline using the following command:
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
   -profile <docker/singularity/.../institute> \
   --references_only --tools all \
   --cosmic_username <EMAIL> --cosmic_passwd <PASSWORD> \
@@ -54,7 +54,7 @@ nextflow run nf-core/rnafusion \
 References for each tools can also be downloaded separately with:
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
   -profile <docker/singularity/.../institute> \
   --references_only --tools <comma-separated-list-of-tools> \
   --cosmic_username <EMAIL> --cosmic_passwd <PASSWORD> \
@@ -75,7 +75,7 @@ First register for a free account at COSMIC at [https://cancer.sanger.ac.uk/cosm
 Use credentials from QIAGEN and add `--qiagen`
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
   -profile <docker/singularity/.../institute> \
   --references_only --tools <comma-separated-list-of-tools> \
   --cosmic_username <EMAIL> --cosmic_passwd <PASSWORD> \
@@ -88,7 +88,7 @@ nextflow run nf-core/rnafusion \
 If process `FUSIONREPORT_DOWNLOAD` times out, it could be due to network restriction (for example if trying to run on HPC). As this process is lightweight in cpu, memory and time, running on local machines with the following options might solve the issue:
 
 ```bash
-nextflow run nf-core/rnafusion  \
+nextflow run .  \
   -profile <docker/singularity/.../institute> \
   --references_only \
   --cosmic_username <EMAIL> --cosmic_passwd <PASSWORD> \
@@ -102,7 +102,7 @@ Where the custom configuration could look like (adaptation to local machine nece
 
 ```text
 process {
-  withName:  'NFCORE_RNAFUSION:RNAFUSION:BUILD_REFERENCES:FUSIONREPORT_DOWNLOAD' {
+  withName:  'RNEXALL:RNAFUSION:BUILD_REFERENCES:FUSIONREPORT_DOWNLOAD' {
     memory = '8.GB'
     cpus = 4
   }
@@ -197,7 +197,7 @@ The pipeline will still work when another command has been used, but it is possi
 The pipeline can either be run using all tools or by specifying individual tools. Visualisation tools will be run on all fusions detected. To run all tools (`arriba`, `ctatsplicing`, `fusioncatcher`, `starfusion`, `stringtie`, `fusionreport`, `fastp`, `salmon`, `fusioninspector`) use the `all` option for the `--tools` parameter:
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
   -profile <docker/singularity/.../institute> \
   --tools all \
   --input <SAMPLE_SHEET.CSV> \
@@ -208,7 +208,7 @@ nextflow run nf-core/rnafusion \
 To run only a set of specific tools use `--tools` with a comma separated list of requested tools:
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
   -profile <docker/singularity/.../institute> \
   --tools <comma-separated-list-of-tools> \
   --input <SAMPLE_SHEET.CSV> \
@@ -241,7 +241,7 @@ Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <
 The above pipeline run specified with a params file in yaml format:
 
 ```bash
-nextflow run nf-core/rnafusion -profile docker -params-file params.yaml
+nextflow run . -profile docker -params-file params.yaml
 ```
 
 with:
@@ -265,7 +265,7 @@ You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-c
 When the flag `fastp` tool is used in `--tools`, `fastp` is used to provide all tools with trimmed reads. Quality and adapter trimming are performed by default. In addition, tail trimming for fusioncatcher and adapter fasta specification are possible. Example usage:
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
 -profile <docker/singularity/.../institute> \
 --tools fastp,... \
 --input <SAMPLE_SHEET.CSV> \
@@ -281,7 +281,7 @@ The additional `--trim_tail_fusioncatcher` flag will toggle an additional `fastp
 #### Filter for fusions detected by several tools
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
   -profile <docker/singularity/.../institute> \
   --tools <comma-separated-list-of-tools> \
   --input <SAMPLE_SHEET.CSV> \
@@ -295,7 +295,7 @@ nextflow run nf-core/rnafusion \
 #### Adding custom fusions to consider as well as the detected set: whitelist
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
   -profile <docker/singularity/.../institute> \
   --tools <comma-separated-list-of-tools> \
   --input <SAMPLE_SHEET.CSV> \
@@ -316,7 +316,7 @@ GENE3--GENE4
 FusionInspector can be run as a standalone with:
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
 -profile <docker/singularity/.../institute> \
 --tools fusioninspector \
 --skip_qc \
@@ -337,7 +337,7 @@ GENE3--GENE4
 #### Skipping QC
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
 -profile <docker/singularity/.../institute> \
 --skip_qc \
 --tools <comma-separated-list-of-tools> \
@@ -351,7 +351,7 @@ This will skip all QC-related processes (picard metrics collection)
 #### Skipping visualisation
 
 ```bash
-nextflow run nf-core/rnafusion \
+nextflow run . \
 -profile <docker/singularity/.../institute> \
 --skip_vis \
 --tools <comma-separated-list-of-tools> \
@@ -395,14 +395,14 @@ As the error message suggests, it is a STAR-related error and your best luck in 
 When you run the command below, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
 
 ```bash
-nextflow pull nf-core/rnafusion
+nextflow pull RNexALL
 ```
 
 ### Reproducibility
 
 It is a good idea to specify the pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
-First, go to the [nf-core/rnafusion releases page](https://github.com/nf-core/rnafusion/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
+First, go to the [RNexALL releases page](https://github.com/nf-core/rnafusion/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, at the bottom of the MultiQC reports.
 

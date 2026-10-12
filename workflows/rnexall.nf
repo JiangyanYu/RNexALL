@@ -23,8 +23,8 @@ include { paramsSummaryMap              }   from 'plugin/nf-schema'
 include { FASTQ_ALIGN_STAR              }   from '../subworkflows/nf-core/fastq_align_star'
 include { paramsSummaryMultiqc          }   from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML        }   from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText        }   from '../subworkflows/local/utils_nfcore_rnafusion_pipeline'
-include { validateInputSamplesheet      }   from '../subworkflows/local/utils_nfcore_rnafusion_pipeline'
+include { methodsDescriptionText        }   from '../subworkflows/local/utils_nfcore_rnexall_pipeline'
+include { validateInputSamplesheet      }   from '../subworkflows/local/utils_nfcore_rnexall_pipeline'
 include { ARRIBA_ARRIBA                 }   from '../modules/nf-core/arriba/arriba/main'
 include { CTATSPLICING_STARTOCANCERINTRONS } from '../modules/nf-core/ctatsplicing/startocancerintrons'
 
@@ -34,7 +34,7 @@ include { CTATSPLICING_STARTOCANCERINTRONS } from '../modules/nf-core/ctatsplici
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-workflow RNAFUSION {
+workflow RNEXALL {
 
 
     take:
@@ -405,7 +405,7 @@ workflow RNAFUSION {
     softwareVersionsToYAML(ch_versions)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",
-            name: 'nf_core_'  +  'rnafusion_software_'  + 'mqc_'  + 'versions.yml',
+            name: 'rnexall_software_mqc_versions.yml',
             sort: true,
             newLine: true
         ).set { ch_collated_versions }
