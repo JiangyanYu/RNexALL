@@ -1,8 +1,5 @@
 <h1>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-rnafusion_logo_dark_new.png">
-    <img alt="RNexALL" src="docs/images/nf-core-rnafusion_logo_light_new.png">
-  </picture>
+  <img alt="RNexALL" src="docs/images/RNexALL.png">
 </h1>
 
 [![GitHub Actions CI Status](https://github.com/nf-core/rnafusion/actions/workflows/nf-test.yml/badge.svg)](https://github.com/nf-core/rnafusion/actions/workflows/nf-test.yml)
