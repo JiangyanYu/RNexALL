@@ -108,7 +108,7 @@ For more details about the output files and reports, please refer to the
 
 ## Credits
 
-
+RNexALL is built upon the rnafusion v4.0.0 (https://github.com/nf-core/rnafusion/releases#release-4.0.0)
 
 ## We thank the following people for their help in the development of this pipeline
 
