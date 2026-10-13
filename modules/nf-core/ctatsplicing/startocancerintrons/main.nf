@@ -1,6 +1,6 @@
 process CTATSPLICING_STARTOCANCERINTRONS {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     container "nf-core/ctatsplicing:0.0.3"
 
