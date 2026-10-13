@@ -17,6 +17,7 @@ include { FASTQC                        }   from '../modules/nf-core/fastqc/main
 include { MULTIQC                       }   from '../modules/nf-core/multiqc/main'
 include { STAR_ALIGN                    }   from '../modules/nf-core/star/align/main'
 include { SALMON_QUANT                  }   from '../modules/nf-core/salmon/quant/main'
+include { SUBREAD_FEATURECOUNTS         }   from '../modules/nf-core/subread/featurecounts/main'
 include { SAMTOOLS_CONVERT              }   from '../modules/nf-core/samtools/convert/main'
 include { SAMTOOLS_INDEX                }   from '../modules/nf-core/samtools/index/main'
 include { paramsSummaryMap              }   from 'plugin/nf-schema'
@@ -68,7 +69,7 @@ workflow RNEXALL {
             }
 
             // Check if we need BAM or CRAM files
-            if (tools.intersect(["ctatsplicing", "arriba", "stringtie", "fusioninspector"]) && !bam && !cram) {
+            if (tools.intersect(["ctatsplicing", "arriba", "stringtie", "fusioninspector", "featurecounts"]) && !bam && !cram) {
                 align = true
             }
 
@@ -89,7 +90,7 @@ workflow RNEXALL {
         }
 
         // Define which fastqs need to be processes (all analysis that's not aligning)
-        def fastq_tools = ["salmon", "fusioninspector", "fusioncatcher"]
+        def fastq_tools = ["salmon", "fusioninspector", "fusioncatcher", "featurecounts"]
         selected_fastq_tools = tools.intersect(fastq_tools)
         def ch_fastqs_to_process = ch_input.fastqs.branch { meta, fastqs ->
             if (!fastqs && selected_fastq_tools) {
@@ -100,7 +101,7 @@ workflow RNEXALL {
         }
 
         // Convert CRAM to BAM when needed (when tools that don't support CRAM are used and when the sample isn't aligned)
-        def only_bam_tools = ["ctatsplicing", "stringtie", "fusioninspector"]
+        def only_bam_tools = ["ctatsplicing", "stringtie", "fusioninspector", "featurecounts"]
         def ch_aligned_inputs = ch_input.bam.filter { meta, file, _bai -> file && !meta.align }
         if(tools.intersect(only_bam_tools)) {
             SAMTOOLS_CONVERT(
@@ -191,7 +192,7 @@ workflow RNEXALL {
         def ch_aligned_reads         = ch_aligned_inputs
         def ch_star_junctions        = ch_input.junctions.filter { meta, file -> file && !meta.align }
         def ch_star_splice_junctions = ch_input.splice_junctions.filter { meta, file -> file && !meta.align }
-        if(tools.intersect(["ctatsplicing", "arriba", "starfusion", "stringtie"])) {
+        if(tools.intersect(["ctatsplicing", "arriba", "starfusion", "stringtie", "featurecounts"])) {
             FASTQ_ALIGN_STAR(
                 ch_fastqs_to_align,
                 BUILD_REFERENCES.out.starindex_ref,
@@ -317,6 +318,21 @@ workflow RNEXALL {
         }
 
         //
+        // MODULE: Run Subread featureCounts
+        //
+
+        if(tools.contains("featurecounts")) {
+            SUBREAD_FEATURECOUNTS(
+                ch_aligned_reads
+                    .map { meta, bam, _bai -> [meta, bam] }
+                    .combine(BUILD_REFERENCES.out.gtf.map { meta, annotation -> annotation })
+                    .map { meta, bam, annotation -> [meta, bam, annotation] }
+            )
+            ch_versions = ch_versions.mix(SUBREAD_FEATURECOUNTS.out.versions)
+            ch_multiqc_files = ch_multiqc_files.mix(SUBREAD_FEATURECOUNTS.out.counts.map { meta, file -> file })
+        }
+
+        //
         // SUBWORKFLOW: Run FusionReport
         //
 
@@ -401,7 +417,7 @@ workflow RNEXALL {
     }
     //
     // Collate and save software versions
-    //
+    //adater
     softwareVersionsToYAML(ch_versions)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",

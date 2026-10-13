@@ -94,7 +94,7 @@
                     "type": "string",
                     "description": "Comma-delimited list of tools to run",
                     "fa_icon": "far fa-file-code",
-                    "pattern": "^((arriba|ctatsplicing|fusioncatcher|starfusion|stringtie|fusionreport|fastp|salmon|fusioninspector|all)?,?)*(?<!,)$"
+                    "pattern": "^((arriba|ctatsplicing|featurecounts|fusioncatcher|starfusion|stringtie|fusionreport|fastp|salmon|fusioninspector|all)?,?)*(?<!,)$"
                 },
                 "read_length": {
                     "type": "integer",

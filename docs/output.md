@@ -15,6 +15,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 - [Arriba](#arriba) - Arriba fusion detection
 - [STAR-fusion](#starfusion) - STAR-fusion fusion detection
 - [StringTie](#stringtie) - StringTie assembly
+- [Subread featureCounts](#subread-featurecounts) - Gene-level read quantification
 - [FusionCatcher](#fusioncatcher) - Fusion catcher fusion detection
 - [CTAT-SPLICING](#ctat-splicing) - Detection and annotation of cancer splicing aberrations
 - [Samtools](#samtools) - SAM/BAM file manipulation
@@ -159,6 +160,15 @@ If `--tools ctatsplicing` is present, [CTAT-SPLICING](https://github.com/Trinity
 </details>
 
 [CTAT-SPLICING](https://github.com/TrinityCTAT/CTAT-SPLICING/wiki) detects and annotates of aberrant splicing isoforms in cancer. This is run on the input files for `arriba` and/or `starfusion`.
+
+### Subread featureCounts
+
+If `--tools featurecounts` is selected, Subread featureCounts assigns aligned reads to features in the pipeline GTF annotation.
+
+The counts and assignment summaries are written to `featurecounts/`:
+
+- `<sample>.featureCounts.tsv`
+- `<sample>.featureCounts.tsv.summary`
 
 ### Fastp
 
