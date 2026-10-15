@@ -1,6 +1,6 @@
 process FUSIONCATCHER_FUSIONCATCHER {
     tag "$meta.id"
-    label 'process_high_memory'
+    label 'process_long_high_memory'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
