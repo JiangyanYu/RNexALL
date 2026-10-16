@@ -35,8 +35,8 @@ process SUBREAD_FEATURECOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        subread: "\$(featureCounts -v 2>&1 | sed -n 's/^featureCounts v//p' | head -n1 | tr -d '\r')"
-    END_VERSIONS
+        subread: \$(featureCounts -v 2>&1 | sed -n 's/^featureCounts v//p' | head -n1 | tr -d '\r')
+END_VERSIONS
     """
 
     stub:
@@ -47,7 +47,7 @@ process SUBREAD_FEATURECOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        subread: "\$(featureCounts -v 2>&1 | sed -n 's/^featureCounts v//p' | head -n1 | tr -d '\r')"
-    END_VERSIONS
+        subread: \$(featureCounts -v 2>&1 | sed -n 's/^featureCounts v//p' | head -n1 | tr -d '\r')
+END_VERSIONS
     """
 }
