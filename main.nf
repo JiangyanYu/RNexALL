@@ -86,7 +86,7 @@ workflow {
     }
 
     if (tools.contains("clinall") && (!params.clinall_ref || !file(params.clinall_ref).exists())) {
-        error("You have selected `clinall` in `--tools`, but did not provide an existing ClinALL reference directory with `--clinall_ref` or in the genome setup config.")
+        error("You have selected `clinall` in `--tools`, but the ClinALL reference directory does not exist: '${params.clinall_ref}'. Set `--clinall_ref` or correct the genome setup config.")
     }
 
     if (tools.contains("arriba")) {
