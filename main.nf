@@ -31,9 +31,9 @@ params.salmon_index                 = getGenomeAttribute("salmon_index")
 params.starfusion_ref               = getGenomeAttribute("starfusion_ref")
 params.starindex_ref                = getGenomeAttribute("starindex_ref")
 params.fusionreport_ref             = getGenomeAttribute("fusionreport_ref")
-params.clinall_ref                  = params.clinall_ref ?: getGenomeAttribute("clinall_ref")
-if (!params.clinall_ref && params.genomes_base) {
-    params.clinall_ref = "${params.genomes_base}/ref-data-clinall-v2/"
+def clinall_ref = params.clinall_ref ?: getGenomeAttribute("clinall_ref")
+if (!clinall_ref && params.genomes_base) {
+    clinall_ref = "${params.genomes_base}/ref-data-clinall-v2/"
 }
 
 /*
@@ -88,8 +88,8 @@ workflow {
         error("You have selected `fusioncatcher` in `--tools`, but did not provide an existing path to the fusioncatcher reference files with `--fusioncatcher_ref`.")
     }
 
-    if (tools.contains("clinall") && (!params.clinall_ref || !file(params.clinall_ref).exists())) {
-        error("You have selected `clinall` in `--tools`, but the ClinALL reference directory does not exist: '${params.clinall_ref}'. Set `--clinall_ref` or correct the genome setup config.")
+    if (tools.contains("clinall") && (!clinall_ref || !file(clinall_ref).exists())) {
+        error("You have selected `clinall` in `--tools`, but the ClinALL reference directory does not exist: '${clinall_ref}'. Set `--clinall_ref` or correct the genome setup config.")
     }
 
     if (tools.contains("arriba")) {
@@ -112,7 +112,8 @@ workflow {
     //
     RNEXALL(
         PIPELINE_INITIALISATION.out.samplesheet,
-        tools
+        tools,
+        clinall_ref
     )
 
     //

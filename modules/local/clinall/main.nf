@@ -5,12 +5,13 @@ process CLINALL {
     container 'ukwgenommedizin/clinall-v2:dev'
     containerOptions {
         workflow.containerEngine == 'singularity' ?
-            "--bind ${params.clinall_ref}:/app/data:ro" :
-            "--entrypoint /bin/bash --volume ${params.clinall_ref}:/app/data:ro"
+            "--bind ${clinall_ref}:/app/data:ro" :
+            "--entrypoint /bin/bash --volume ${clinall_ref}:/app/data:ro"
     }
 
     input:
     path(counts)
+    val(clinall_ref)
 
     output:
     path 'outputs', emit: results

@@ -42,6 +42,7 @@ workflow RNEXALL {
     take:
     ch_samplesheet_input    // channel: samplesheet read in from --input
     tools                   // list: a list of tools to run
+    clinall_ref             // ClinALL reference database directory
 
     main:
 
@@ -341,7 +342,8 @@ workflow RNEXALL {
             CLINALL(
                 SUBREAD_FEATURECOUNTS.out.counts
                     .map { meta, counts -> counts }
-                    .collect()
+                    .collect(),
+                clinall_ref
             )
             ch_versions = ch_versions.mix(CLINALL.out.versions)
         }
