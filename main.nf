@@ -31,7 +31,7 @@ params.salmon_index                 = getGenomeAttribute("salmon_index")
 params.starfusion_ref               = getGenomeAttribute("starfusion_ref")
 params.starindex_ref                = getGenomeAttribute("starindex_ref")
 params.fusionreport_ref             = getGenomeAttribute("fusionreport_ref")
-params.clinall_ref                  = params.clinall_ref ?: getGenomeAttribute("clinall_ref")
+params.clinall_ref                  = getGenomeAttribute("clinall_ref")
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
