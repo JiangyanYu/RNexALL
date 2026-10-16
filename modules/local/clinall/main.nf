@@ -6,7 +6,7 @@ process CLINALL {
     containerOptions {
         workflow.containerEngine == 'singularity' ?
             "--bind ${clinall_ref}:/app/data:ro" :
-            "--entrypoint /bin/bash --volume ${clinall_ref}:/app/data:ro"
+            "--entrypoint '' --volume ${clinall_ref}:/app/data:ro"
     }
 
     input:
