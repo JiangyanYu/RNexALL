@@ -2,7 +2,7 @@ process CLINALL {
     tag 'combined'
     label 'process_medium'
 
-    container 'ukwgenommedizin/clinall-v2:dev'
+    container 'docker.io/ukwgenommedizin/clinall-v2:dev'
     containerOptions {
         workflow.containerEngine == 'singularity' ?
             "--bind ${clinall_ref}:/app/data:ro" :
