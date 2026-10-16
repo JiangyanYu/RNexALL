@@ -170,6 +170,8 @@ The counts and assignment summaries are written to `featurecounts/`:
 - `<sample>.featureCounts.tsv`
 - `<sample>.featureCounts.tsv.summary`
 
+If `--tools clinall` is selected, ClinALL runs once on the combined FeatureCounts batch. Its output directory is published under `clinall/`.
+
 ### Fastp
 
 If `--tools fastp` is present, [fastp](https://github.com/OpenGene/fastp) will filter low quality reads as well as bases at the 5' and 3' ends, trim adapters (automatically detected, but input with parameter `--adapter_fasta` is possible). 3' trimming is also possible via parameter `--trim_tail`.

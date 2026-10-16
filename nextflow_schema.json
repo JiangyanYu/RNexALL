@@ -94,7 +94,7 @@
                     "type": "string",
                     "description": "Comma-delimited list of tools to run",
                     "fa_icon": "far fa-file-code",
-                    "pattern": "^((arriba|ctatsplicing|featurecounts|fusioncatcher|starfusion|stringtie|fusionreport|fastp|salmon|fusioninspector|all)?,?)*(?<!,)$"
+                    "pattern": "^((arriba|ctatsplicing|clinall|featurecounts|fusioncatcher|starfusion|stringtie|fusionreport|fastp|salmon|fusioninspector|all)?,?)*(?<!,)$"
                 },
                 "read_length": {
                     "type": "integer",
@@ -159,6 +159,12 @@
                     "format": "directory-path",
                     "fa_icon": "far fa-file-code",
                     "description": "Path to fusioncatcher references"
+                },
+                "clinall_ref": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "fa_icon": "far fa-file-code",
+                    "description": "Path to ClinALL reference database directory"
                 },
                 "fusioninspector_limitSjdbInsertNsj": {
                     "type": "integer",

@@ -18,6 +18,7 @@ include { MULTIQC                       }   from '../modules/nf-core/multiqc/mai
 include { STAR_ALIGN                    }   from '../modules/nf-core/star/align/main'
 include { SALMON_QUANT                  }   from '../modules/nf-core/salmon/quant/main'
 include { SUBREAD_FEATURECOUNTS         }   from '../modules/nf-core/subread/featurecounts/main'
+include { CLINALL                       }   from '../modules/local/clinall/main'
 include { SAMTOOLS_CONVERT              }   from '../modules/nf-core/samtools/convert/main'
 include { SAMTOOLS_INDEX                }   from '../modules/nf-core/samtools/index/main'
 include { paramsSummaryMap              }   from 'plugin/nf-schema'
@@ -330,6 +331,19 @@ workflow RNEXALL {
             )
             ch_versions = ch_versions.mix(SUBREAD_FEATURECOUNTS.out.versions)
             ch_multiqc_files = ch_multiqc_files.mix(SUBREAD_FEATURECOUNTS.out.counts.map { meta, file -> file })
+        }
+
+        //
+        // MODULE: Run ClinALL on the combined FeatureCounts batch
+        //
+
+        if(tools.contains("clinall")) {
+            CLINALL(
+                SUBREAD_FEATURECOUNTS.out.counts
+                    .map { meta, counts -> counts }
+                    .collect()
+            )
+            ch_versions = ch_versions.mix(CLINALL.out.versions)
         }
 
         //

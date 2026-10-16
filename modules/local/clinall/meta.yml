@@ -1,0 +1,25 @@
+name: clinall
+description: Classify acute lymphoblastic leukemia samples using ClinALL
+keywords:
+  - clinall
+  - featurecounts
+  - classification
+tools:
+  - clinall:
+      description: ClinALL classifier
+      homepage: https://github.com/UKWgenommedizin
+      licence: ['unknown']
+input:
+  - counts:
+      type: file
+      description: Batch of FeatureCounts tables
+      pattern: '*.featureCounts.tsv'
+output:
+  - results:
+      type: directory
+      description: ClinALL batch classification results
+      pattern: 'outputs/**'
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: 'versions.yml'

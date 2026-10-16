@@ -194,7 +194,9 @@ The pipeline will still work when another command has been used, but it is possi
 
 ### Starting commands
 
-The pipeline can either be run using all tools or by specifying individual tools. Visualisation tools will be run on all fusions detected. To run all tools (`arriba`, `ctatsplicing`, `featurecounts`, `fusioncatcher`, `starfusion`, `stringtie`, `fusionreport`, `fastp`, `salmon`, `fusioninspector`) use the `all` option for the `--tools` parameter:
+The pipeline can either be run using all tools or by specifying individual tools. Visualisation tools will be run on all fusions detected. To run all tools (`arriba`, `ctatsplicing`, `featurecounts`, `fusioncatcher`, `starfusion`, `stringtie`, `fusionreport`, `fastp`, `salmon`, `fusioninspector`, `clinall`) use the `all` option for the `--tools` parameter:
+
+Selecting `clinall` also runs FeatureCounts and applies ClinALL to the combined count tables. Set `--clinall_ref` to the ClinALL database directory, or define `clinall_ref` in the selected genome's reference configuration.
 
 ```bash
 nextflow run . \
