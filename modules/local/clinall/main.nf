@@ -19,6 +19,10 @@ process CLINALL {
 
     script:
     """
+    # Numba's default cache locations may not be writable inside the container.
+    export NUMBA_CACHE_DIR="\${PWD}/.numba_cache"
+    mkdir -p "\$NUMBA_CACHE_DIR"
+
     python /app/run.py \\
         --batch-root . \\
         --batch-pattern "*.featureCounts.tsv" \\
