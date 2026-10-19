@@ -27,7 +27,7 @@ process CLINALL {
     # metadata/comment rows and keep the gene identifier and final count column.
     mkdir -p clinall_counts
     for counts_file in *.featureCounts.tsv; do
-        awk -F '\t' 'BEGIN { OFS = "\t" } !/^#/ { if (!header) { print "gene_od", "raw"; header = 1; next } print \$1, \$NF }' \\
+        awk -F '\t' 'BEGIN { OFS = "\t" } !/^#/ { if (!header) { print "gene_id", "raw"; header = 1; next } print \$1, \$NF }' \\
             "\$counts_file" > "clinall_counts/\$counts_file"
     done
 
