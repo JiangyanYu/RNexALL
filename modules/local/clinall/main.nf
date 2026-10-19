@@ -23,8 +23,16 @@ process CLINALL {
     export NUMBA_CACHE_DIR="\${PWD}/.numba_cache"
     mkdir -p "\$NUMBA_CACHE_DIR"
 
+    # ClinALL expects a two-column expression table. Drop featureCounts
+    # metadata/comment rows and keep the gene identifier and final count column.
+    mkdir -p clinall_counts
+    for counts_file in *.featureCounts.tsv; do
+        awk -F '\t' 'BEGIN { OFS = "\t" } !/^#/ { if (!header) { print "gene_od", "raw"; header = 1; next } print \$1, \$NF }' \\
+            "\$counts_file" > "clinall_counts/\$counts_file"
+    done
+
     python /app/run.py \\
-        --batch-root . \\
+        --batch-root clinall_counts \\
         --batch-pattern "*.featureCounts.tsv" \\
         --batch-mode combined \\
         --batch-output-dir outputs \\
