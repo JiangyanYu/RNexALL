@@ -18,7 +18,7 @@ output:
   - results:
       type: directory
       description: ClinALL batch classification results
-      pattern: 'outputs/**'
+      pattern: 'combined/**'
   - versions:
       type: file
       description: File containing software versions

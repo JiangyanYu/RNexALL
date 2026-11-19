@@ -14,7 +14,7 @@ process CLINALL {
     val(clinall_ref)
 
     output:
-    path 'outputs', emit: results
+    path 'combined', emit: results
     path 'versions.yml', emit: versions
 
     script:
@@ -41,7 +41,7 @@ process CLINALL {
         --batch-root clinall_counts \\
         --batch-pattern "*.featureCounts.tsv" \\
         --batch-mode combined \\
-        --batch-output-dir outputs \\
+        --batch-output-dir . \\
         --expr-col raw \\
         --umap
 
@@ -50,7 +50,7 @@ process CLINALL {
 
     stub:
     """
-    mkdir -p outputs
+    mkdir -p combined
     printf '"%s":\\n    clinall: "dev"\\n' "${task.process}" > versions.yml
     """
 }

@@ -170,7 +170,7 @@ The counts and assignment summaries are written to `featurecounts/`:
 - `<sample>.featureCounts.tsv`
 - `<sample>.featureCounts.tsv.summary`
 
-If `--tools clinall` is selected, ClinALL runs once on the combined FeatureCounts batch. Its output directory is published under `clinall/`.
+If `--tools clinall` is selected, ClinALL runs once on the combined FeatureCounts batch. Its output directory is published under `clinall/combined/`.
 
 ### Fastp
 
