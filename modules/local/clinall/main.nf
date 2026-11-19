@@ -5,8 +5,8 @@ process CLINALL {
     container 'docker.io/ukwgenommedizin/clinall-v2:dev'
     containerOptions {
         workflow.containerEngine == 'singularity' ?
-            "--bind ${clinall_ref}:/app/data:ro" :
-            "--entrypoint '' --volume ${clinall_ref}:/app/data:ro"
+            "--bind '${clinall_ref}:/app/data:ro'" :
+            "--entrypoint '' --volume '${clinall_ref}:/app/data:ro'"
     }
 
     input:
@@ -22,6 +22,12 @@ process CLINALL {
     # Numba's default cache locations may not be writable inside the container.
     export NUMBA_CACHE_DIR="\${PWD}/.numba_cache"
     mkdir -p "\$NUMBA_CACHE_DIR"
+
+    if [[ ! -r /app/data/filtered_dataset.pkl ]]; then
+        echo "ERROR: ClinALL reference is not mounted or is missing filtered_dataset.pkl at /app/data/filtered_dataset.pkl. Check --clinall_ref." >&2
+        exit 1
+    fi
+    ln -s /app/data data
 
     # ClinALL expects a two-column expression table. Drop featureCounts
     # metadata/comment rows and keep the gene identifier and final count column.

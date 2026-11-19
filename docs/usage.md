@@ -196,7 +196,7 @@ The pipeline will still work when another command has been used, but it is possi
 
 The pipeline can either be run using all tools or by specifying individual tools. Visualisation tools will be run on all fusions detected. To run all tools (`arriba`, `ctatsplicing`, `featurecounts`, `fusioncatcher`, `starfusion`, `stringtie`, `fusionreport`, `fastp`, `salmon`, `fusioninspector`, `clinall`) use the `all` option for the `--tools` parameter:
 
-Selecting `clinall` also runs FeatureCounts and applies ClinALL to the combined count tables. Set `--clinall_ref` to the ClinALL database directory, or define `clinall_ref` in the selected genome's reference configuration.
+Selecting `clinall` also runs FeatureCounts and applies ClinALL to the combined count tables. Set `--clinall_ref` to the ClinALL database directory, or define `clinall_ref` in the selected genome's reference configuration. The directory must contain `filtered_dataset.pkl`; the pipeline checks for it after mounting the directory read-only at `/app/data` in the ClinALL container.
 
 ```bash
 nextflow run . \
@@ -204,6 +204,7 @@ nextflow run . \
   --tools all \
   --input <SAMPLE_SHEET.CSV> \
   --genomes_base <PATH/TO/REFERENCES> \
+  --clinall_ref "$(pwd)/ref-data-clinall-v2" \
   --outdir <OUTPUT/PATH>
 ```
 

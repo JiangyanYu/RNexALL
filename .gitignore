@@ -1,1 +1,4 @@
 error.nextflow.log
+.nextflow/
+null/
+.nextflow.log*
