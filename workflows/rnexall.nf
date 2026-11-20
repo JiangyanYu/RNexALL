@@ -318,7 +318,20 @@ workflow RNEXALL {
 
             FUSION_OVERVIEW(
                 MERGE_FUSIONS.out.filtered
+                    .filter { caller, filtered_file -> caller == 'arriba' }
                     .map { caller, filtered_file -> filtered_file }
+                    .collect(),
+                MERGE_FUSIONS.out.filtered
+                    .filter { caller, filtered_file -> caller == 'starfusion' }
+                    .map { caller, filtered_file -> filtered_file }
+                    .collect(),
+                MERGE_FUSIONS.out.merged
+                    .filter { caller, merged_file -> caller == 'arriba' }
+                    .map { caller, merged_file -> merged_file }
+                    .collect(),
+                MERGE_FUSIONS.out.merged
+                    .filter { caller, merged_file -> caller == 'starfusion' }
+                    .map { caller, merged_file -> merged_file }
                     .collect(),
                 ch_samplesheet.map { meta, fastqs, bam, bai, cram, crai, junctions, splice_junctions -> meta.id }
                     .collect(),

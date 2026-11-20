@@ -6,7 +6,7 @@ process MERGE_FUSIONS {
     tuple val(caller), path(fusion_files), path(whitelist_file)
 
     output:
-    path "${caller}_merged.tsv",   emit: merged
+    tuple val(caller), path("${caller}_merged.tsv"), emit: merged
     tuple val(caller), path("${caller}_filtered.tsv"), emit: filtered
 
     script:
