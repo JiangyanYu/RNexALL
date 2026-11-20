@@ -7,7 +7,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from openpyxl import Workbook
-from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 
@@ -54,12 +54,6 @@ def main() -> None:
     for sample_index, sample in enumerate(samples):
         arriba_column = 2 + sample_index * 2
         starfusion_column = arriba_column + 1
-        sheet.merge_cells(
-            start_row=1,
-            start_column=arriba_column,
-            end_row=1,
-            end_column=starfusion_column,
-        )
         sample_cell = sheet.cell(row=1, column=arriba_column, value=sample)
         sample_cell.alignment = Alignment(horizontal="center")
         sheet.cell(row=2, column=arriba_column, value="Arriba")
@@ -93,6 +87,50 @@ def main() -> None:
             cell.font = Font(bold=True)
             cell.fill = header_fill
             cell.alignment = Alignment(horizontal="center")
+
+    thin_side = Side(style="thin", color="808080")
+    thick_side = Side(style="thick", color="000000")
+    for row in sheet.iter_rows(
+        min_row=1,
+        max_row=sheet.max_row,
+        min_col=1,
+        max_col=1 + len(samples) * 2,
+    ):
+        for cell in row:
+            cell.border = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
+
+    last_row = sheet.max_row
+    for sample_index in range(len(samples)):
+        first_column = 2 + sample_index * 2
+        last_column = first_column + 1
+        first_header_cell = sheet.cell(row=1, column=first_column)
+        first_header_cell.border = Border(
+            left=thick_side,
+            right=thick_side,
+            top=thick_side,
+            bottom=first_header_cell.border.bottom,
+        )
+        for row_index in range(2, last_row + 1):
+            first_cell = sheet.cell(row=row_index, column=first_column)
+            last_cell = sheet.cell(row=row_index, column=last_column)
+            first_cell.border = Border(
+                left=thick_side,
+                right=first_cell.border.right,
+                top=thick_side if row_index == 1 else first_cell.border.top,
+                bottom=thick_side if row_index == last_row else first_cell.border.bottom,
+            )
+            last_cell.border = Border(
+                left=last_cell.border.left,
+                right=thick_side,
+                top=thick_side if row_index == 1 else last_cell.border.top,
+                bottom=thick_side if row_index == last_row else last_cell.border.bottom,
+            )
+        sheet.merge_cells(
+            start_row=1,
+            start_column=first_column,
+            end_row=1,
+            end_column=last_column,
+        )
 
     sheet.freeze_panes = "B3"
     sheet.auto_filter.ref = f"A2:{get_column_letter(1 + len(samples) * 2)}{max(sheet.max_row, 2)}"

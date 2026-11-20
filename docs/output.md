@@ -147,7 +147,7 @@ When Arriba and/or STAR-Fusion are run, their per-sample fusion predictions are 
 - `downstream_analysis/arriba_filtered.tsv` - Arriba predictions with `sum_split_reads >= 10` and `type` containing `translocation`, plus any matches from the Arriba whitelist, regardless of those filters
 - `downstream_analysis/starfusion_merged.tsv` - all STAR-Fusion predictions
 - `downstream_analysis/starfusion_filtered.tsv` - STAR-Fusion predictions with `JunctionReadCount >= 10`
-- `downstream_analysis/fusion_overview.xlsx` - Excel overview of filtered Arriba and STAR-Fusion counts, with two columns per sample. Duplicate fusion/sample/caller counts are summed; absent counts are blank.
+- `downstream_analysis/fusion_overview.xlsx` - Excel overview of filtered Arriba and STAR-Fusion counts, with two columns per sample. Duplicate fusion/sample/caller counts are summed; absent counts are blank. Used cells have borders, each sample's caller columns have a thick outer border, and counts found by both callers in the same sample are highlighted.
 
 ### CTAT-SPLICING
 
