@@ -1,0 +1,70 @@
+\documentclass[tikz,border=12pt]{standalone}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{arrows.meta,positioning}
+
+\definecolor{RNexNavy}{HTML}{10245A}
+\definecolor{RNexPurple}{HTML}{6129A6}
+\definecolor{RNexTeal}{HTML}{08A5B9}
+\definecolor{RNexOrange}{HTML}{F58220}
+\definecolor{RNexRed}{HTML}{F44336}
+
+\tikzset{
+    flow/.style={-{Stealth[length=2mm]},line width=0.8pt},
+    tool/.style={
+        rectangle,rounded corners=2mm,draw=RNexNavy,fill=RNexNavy!7,
+        line width=0.9pt,font=\sffamily\large,text=RNexNavy,
+        minimum width=2.8cm,minimum height=0.75cm,inner sep=4pt
+    },
+    orange tool/.style={tool,draw=RNexOrange,fill=RNexOrange!9},
+    purple tool/.style={tool,draw=RNexPurple,fill=RNexPurple!8},
+    teal tool/.style={tool,draw=RNexTeal,fill=RNexTeal!8},
+    red tool/.style={tool,draw=RNexRed,fill=RNexRed!8}
+}
+
+\begin{document}
+\begin{tikzpicture}[x=1.15cm,y=1cm]
+
+\node[tool] (fastq) at (0,3.0) {.fastq};
+\node[tool] (fastqc) at (0,2.0) {FastQC};
+\node[teal tool] (fastp) at (0,1.0) {fastp};
+\node[tool] (star) at (2.8,1.0) {STAR};
+\draw[flow,draw=RNexNavy] (fastq) -- (fastqc);
+\draw[flow,draw=RNexNavy] (fastqc) -- (fastp);
+\draw[flow,draw=RNexTeal] (fastp) -- (star);
+
+\node[teal tool] (fast_trimming) at (0,0) {fast\_trimming};
+\node[orange tool] (fusioncatcher) at (0,-1) {FusionCatcher};
+\node[orange tool,anchor=west] (arriba) at (4.7,2.0) {Arriba};
+\node[orange tool,anchor=west] (starfusion) at (4.7,1.0) {STAR-Fusion};
+\node[purple tool,anchor=west] (featurecounts) at (4.7,0.0) {featurecounts};
+\node[teal tool,anchor=west] (ctat) at (4.7,4.0) {CTAT-Splicing};
+\node[teal tool,anchor=west] (stringtie) at (4.7,3.0) {stringTie};
+\node[tool] (picard) at (2.8,-1.0) {picard};
+
+\draw[flow,draw=RNexTeal] (fastp.south) -- (fast_trimming.north);
+\draw[flow,draw=RNexOrange] (fast_trimming.south) -- (fusioncatcher.north);
+\draw[flow,draw=RNexOrange] (star.north east) -- (arriba.west);
+\draw[flow,draw=RNexOrange] (star.east) -- (starfusion.west);
+\draw[flow,draw=RNexPurple] (star.east) -- (featurecounts.west);
+\draw[flow,draw=RNexTeal] (star.north east) -- (ctat.west);
+\draw[flow,draw=RNexTeal] (star.north east) -- (stringtie.west);
+\draw[flow,draw=RNexNavy] (star.south) -- (picard.north);
+
+\node[red tool] (merge) at (10.5,1.5) {merge\_fusions};
+\node[red tool] (overview) at (14.1,1.5) {fusion\_overview};
+\draw[flow,draw=RNexRed] (arriba.east) -- (merge.west);
+\draw[flow,draw=RNexRed] (starfusion.east) -- (merge.west);
+\draw[flow,draw=RNexRed] (merge) -- (overview);
+
+\node[purple tool] (clinall) at (10.5,0.0) {clinALL};
+\draw[flow,draw=RNexPurple] (featurecounts) -- (clinall);
+
+\node[tool] (multiqc) at (6.8,-1.0) {MultiQC};
+\draw[flow,draw=RNexNavy] (picard.east) -- (multiqc.west);
+
+\node[anchor=north,inner sep=0pt] at (ctat.north -| merge.north)
+    {\includegraphics[width=4.8cm,trim=80 400 80 180,clip]{RNexALL.png}};
+
+\end{tikzpicture}
+\end{document}

@@ -25,7 +25,7 @@ In rnafusion the full-sized test includes reference building and fusion detectio
 
 ## Pipeline summary
 
-![RNexALL metro map](docs/images/nf-core-rnafusion_metro_map.png)
+![RNexALL workflow](docs/images/rnexall_workflow.png)
 
 ### References
 
