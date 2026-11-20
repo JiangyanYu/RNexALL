@@ -125,7 +125,7 @@ workflow BUILD_REFERENCES {
     }
 
     def ch_starindex_ref = Channel.empty()
-    def star_index_tools = tools.intersect(["starfusion", "arriba", "ctatsplicing", "stringtie"])
+    def star_index_tools = tools.intersect(["starfusion", "arriba", "ctatsplicing", "stringtie", "featurecounts"])
     if (star_index_tools) {
         if (!exists_not_empty(params.starindex_ref)) {
             STAR_GENOMEGENERATE(ch_fasta, ch_gtf)

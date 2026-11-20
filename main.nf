@@ -31,6 +31,10 @@ params.salmon_index                 = getGenomeAttribute("salmon_index")
 params.starfusion_ref               = getGenomeAttribute("starfusion_ref")
 params.starindex_ref                = getGenomeAttribute("starindex_ref")
 params.fusionreport_ref             = getGenomeAttribute("fusionreport_ref")
+def clinall_ref = params.clinall_ref ?: getGenomeAttribute("clinall_ref")
+if (!clinall_ref && params.genomes_base) {
+    clinall_ref = "${params.genomes_base}/ref-data-clinall-v2/"
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +66,9 @@ workflow {
     )
 
     def tools = params.tools.tokenize(",")
+    if (tools.contains("clinall") && !tools.contains("featurecounts")) {
+        tools.add("featurecounts")
+    }
     if (tools.contains("all")) {
         def json = new groovy.json.JsonSlurper().parseText(file("${projectDir}/nextflow_schema.json").text)
         def pattern = json.get('$defs')?.get('input_output_options')?.get('properties')?.get('tools')?.get('pattern')
@@ -79,6 +86,10 @@ workflow {
 
     if (tools.contains("fusioncatcher") && (!params.fusioncatcher_ref || !file(params.fusioncatcher_ref).exists())) {
         error("You have selected `fusioncatcher` in `--tools`, but did not provide an existing path to the fusioncatcher reference files with `--fusioncatcher_ref`.")
+    }
+
+    if (tools.contains("clinall") && (!clinall_ref || !file(clinall_ref).exists())) {
+        error("You have selected `clinall` in `--tools`, but the ClinALL reference directory does not exist: '${clinall_ref}'. Set `--clinall_ref` or correct the genome setup config.")
     }
 
     if (tools.contains("arriba")) {
@@ -101,7 +112,8 @@ workflow {
     //
     RNEXALL(
         PIPELINE_INITIALISATION.out.samplesheet,
-        tools
+        tools,
+        clinall_ref
     )
 
     //

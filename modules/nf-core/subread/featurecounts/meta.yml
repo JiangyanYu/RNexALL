@@ -1,0 +1,39 @@
+name: subread_featurecounts
+description: Count reads or fragments assigned to genomic features using Subread featureCounts
+keywords:
+  - subread
+  - featurecounts
+  - counts
+tools:
+  - subread:
+      description: High-performance toolset for alignment, quantification and mutation discovery
+      homepage: https://subread.sourceforge.net/
+      documentation: https://subread.sourceforge.net/featureCounts.html
+      tool_dev_url: https://github.com/ShiLab-Bioinformatics/subread
+      licence: ['GPL-3.0-or-later']
+      identifier: biotools:subread
+input:
+  - meta:
+      type: map
+      description: Sample metadata, including single_end and optionally strandedness
+  - bam:
+      type: file
+      description: Coordinate-sorted BAM file
+      pattern: '*.bam'
+  - annotation:
+      type: file
+      description: Gene annotation in GTF or SAF format
+      pattern: '*.{gtf,gff,saf}'
+output:
+  - counts:
+      type: file
+      description: FeatureCounts tabular counts
+      pattern: '*.featureCounts.tsv'
+  - summary:
+      type: file
+      description: Summary of assigned and unassigned reads
+      pattern: '*.featureCounts.tsv.summary'
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: 'versions.yml'
