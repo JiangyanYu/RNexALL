@@ -19,6 +19,8 @@ include { STAR_ALIGN                    }   from '../modules/nf-core/star/align/
 include { SALMON_QUANT                  }   from '../modules/nf-core/salmon/quant/main'
 include { SUBREAD_FEATURECOUNTS         }   from '../modules/nf-core/subread/featurecounts/main'
 include { CLINALL                       }   from '../modules/local/clinall/main'
+include { MERGE_FUSIONS                 }   from '../modules/local/merge_fusions/main'
+include { FUSION_OVERVIEW               }   from '../modules/local/fusion_overview/main'
 include { SAMTOOLS_CONVERT              }   from '../modules/nf-core/samtools/convert/main'
 include { SAMTOOLS_INDEX                }   from '../modules/nf-core/samtools/index/main'
 include { paramsSummaryMap              }   from 'plugin/nf-schema'
@@ -284,6 +286,44 @@ workflow RNEXALL {
                 ch_versions = ch_versions.mix(STARFUSION_DETECT.out.versions)
                 ch_starfusion_fusions = STARFUSION_DETECT.out.fusions
             }
+        }
+
+        //
+        // MODULE: Merge and filter Arriba and STAR-Fusion outputs
+        //
+
+        def ch_merge_fusions = Channel.empty()
+        def ch_arriba_fusion_whitelist = file("${projectDir}/assets/arriba_fusion_whitelist.csv", checkIfExists: true)
+
+        if (tools.contains("arriba")) {
+            ch_merge_fusions = ch_merge_fusions.mix(
+                ch_arriba_fusions
+                    .map { meta, fusion_file -> fusion_file }
+                    .collect()
+                    .map { fusion_files -> ['arriba', fusion_files, ch_arriba_fusion_whitelist] }
+            )
+        }
+
+        if (tools.contains("starfusion")) {
+            ch_merge_fusions = ch_merge_fusions.mix(
+                ch_starfusion_fusions
+                    .map { meta, fusion_file -> fusion_file }
+                    .collect()
+                    .map { fusion_files -> ['starfusion', fusion_files, ch_arriba_fusion_whitelist] }
+            )
+        }
+
+        if (tools.intersect(["arriba", "starfusion"])) {
+            MERGE_FUSIONS(ch_merge_fusions)
+
+            FUSION_OVERVIEW(
+                MERGE_FUSIONS.out.filtered
+                    .map { caller, filtered_file -> filtered_file }
+                    .collect(),
+                ch_samplesheet.map { meta, fastqs, bam, bai, cram, crai, junctions, splice_junctions -> meta.id }
+                    .collect(),
+                Channel.value(file("${projectDir}/bin/fusion_overview.py", checkIfExists: true))
+            )
         }
 
 

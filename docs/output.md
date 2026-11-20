@@ -14,6 +14,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 - [STAR](#star) - Alignment of FASTQ files
 - [Arriba](#arriba) - Arriba fusion detection
 - [STAR-fusion](#starfusion) - STAR-fusion fusion detection
+- [Downstream fusion analysis](#downstream-fusion-analysis) - Merged and read-count-filtered Arriba and STAR-Fusion results
 - [StringTie](#stringtie) - StringTie assembly
 - [Subread featureCounts](#subread-featurecounts) - Gene-level read quantification
 - [FusionCatcher](#fusioncatcher) - Fusion catcher fusion detection
@@ -79,6 +80,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 ├── arriba
 ├── arriba_visualisation
 ├── ctatsplicing
+├── downstream_analysis
 ├── fastp
 ├── fastqc
 ├── fastqc_for_fastp
@@ -136,6 +138,16 @@ If no parameters are specified, the default is applied.
 </details>
 
 The visualisation displays the fusions that fusioninspector outputs. That means that fusions from all callers are aggregated (by fusion-report) and then analyzed through fusioninspector (Note: Fusioninspecor contains a filtering step!).
+
+### Downstream fusion analysis
+
+When Arriba and/or STAR-Fusion are run, their per-sample fusion predictions are merged into one table per caller under `downstream_analysis/`. The merged tables include a `sample` column. Arriba tables also include `sum_split_reads`, calculated from `split_reads1` and `split_reads2`, and `fusions`, formed from `#gene1` and `gene2` with `::` between them. The editable whitelist at `assets/arriba_fusion_whitelist.csv` contains `type,value` rows: use `fusion` for an exact fusion name or `gene` for any fusion involving that gene.
+
+- `downstream_analysis/arriba_merged.tsv` - all Arriba predictions
+- `downstream_analysis/arriba_filtered.tsv` - Arriba predictions with `sum_split_reads >= 10` and `type` containing `translocation`, plus any matches from the Arriba whitelist, regardless of those filters
+- `downstream_analysis/starfusion_merged.tsv` - all STAR-Fusion predictions
+- `downstream_analysis/starfusion_filtered.tsv` - STAR-Fusion predictions with `JunctionReadCount >= 10`
+- `downstream_analysis/fusion_overview.xlsx` - Excel overview of filtered Arriba and STAR-Fusion counts, with two columns per sample. Duplicate fusion/sample/caller counts are summed; absent counts are blank.
 
 ### CTAT-SPLICING
 
