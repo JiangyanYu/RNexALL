@@ -7,6 +7,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 
@@ -49,10 +50,20 @@ def main() -> None:
     sheet = workbook.active
     sheet.title = "Fusion overview"
 
-    headers = ["fusion_name"]
-    for sample in samples:
-        headers.extend([f"{sample}_Arriba", f"{sample}_STAR-Fusion"])
-    sheet.append(headers)
+    sheet.cell(row=2, column=1, value="fusion_name")
+    for sample_index, sample in enumerate(samples):
+        arriba_column = 2 + sample_index * 2
+        starfusion_column = arriba_column + 1
+        sheet.merge_cells(
+            start_row=1,
+            start_column=arriba_column,
+            end_row=1,
+            end_column=starfusion_column,
+        )
+        sample_cell = sheet.cell(row=1, column=arriba_column, value=sample)
+        sample_cell.alignment = Alignment(horizontal="center")
+        sheet.cell(row=2, column=arriba_column, value="Arriba")
+        sheet.cell(row=2, column=starfusion_column, value="STAR-Fusion")
 
     for fusion in fusions:
         row = [fusion]
@@ -63,10 +74,30 @@ def main() -> None:
             ])
         sheet.append(row)
 
-    sheet.freeze_panes = "B2"
-    sheet.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{max(sheet.max_row, 1)}"
-    for column in sheet.columns:
-        column_letter = column[0].column_letter
+    matched_fill = PatternFill(fill_type="solid", fgColor="FFF2CC")
+    matched_font = Font(bold=True)
+    for fusion_index, fusion in enumerate(fusions, start=3):
+        for sample_index, sample in enumerate(samples):
+            arriba_key = (fusion, sample)
+            starfusion_key = (fusion, sample)
+            if arriba_key in arriba_counts and starfusion_key in starfusion_counts:
+                arriba_cell = sheet.cell(row=fusion_index, column=2 + sample_index * 2)
+                starfusion_cell = sheet.cell(row=fusion_index, column=3 + sample_index * 2)
+                for cell in (arriba_cell, starfusion_cell):
+                    cell.fill = matched_fill
+                    cell.font = matched_font
+
+    header_fill = PatternFill(fill_type="solid", fgColor="D9EAF7")
+    for row in sheet.iter_rows(min_row=1, max_row=2):
+        for cell in row:
+            cell.font = Font(bold=True)
+            cell.fill = header_fill
+            cell.alignment = Alignment(horizontal="center")
+
+    sheet.freeze_panes = "B3"
+    sheet.auto_filter.ref = f"A2:{get_column_letter(1 + len(samples) * 2)}{max(sheet.max_row, 2)}"
+    for column_index, column in enumerate(sheet.columns, start=1):
+        column_letter = get_column_letter(column_index)
         width = max(len(str(cell.value or "")) for cell in column) + 2
         sheet.column_dimensions[column_letter].width = min(width, 40)
 
